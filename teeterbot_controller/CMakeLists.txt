@@ -20,7 +20,7 @@ find_package(catkin REQUIRED COMPONENTS
 
 # find_package(Eigen3 REQUIRED)
 find_package(Eigen3 REQUIRED)
-find_package(casadi REQUIRED)
+# find_package(casadi REQUIRED)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -145,8 +145,10 @@ include
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 add_executable(teeterbot_controller_lqr src/teeterbot_controller_lqr.cpp)
-add_executable(teeterbot_controller_nmpc src/teeterbot_controller_nmpc.cpp src/nmpc_cartpole.cpp)
+# add_executable(teeterbot_controller_nmpc src/teeterbot_controller_nmpc.cpp src/nmpc_cartpole.cpp)
 add_executable(teeterbot_keyboard_input src/teeterbot_keyboard_input.cpp)
+
+add_executable(teeterbot_controller_lmpc src/teeterbot_controller_lmpc.cpp src/MPC_Matrices.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -165,10 +167,15 @@ target_link_libraries(teeterbot_controller_lqr
 target_link_libraries(teeterbot_keyboard_input
   ${catkin_LIBRARIES}
 )
-target_link_libraries(teeterbot_controller_nmpc
+# target_link_libraries(teeterbot_controller_nmpc
+#   ${catkin_LIBRARIES}
+#   casadi
+# )
+
+target_link_libraries(teeterbot_controller_lmpc 
   ${catkin_LIBRARIES}
-  casadi
 )
+
 
 #############
 ## Install ##
