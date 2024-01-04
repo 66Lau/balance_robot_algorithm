@@ -28,11 +28,17 @@ void MPC_Matrices1(const Eigen::MatrixXd &A, const Eigen::MatrixXd &B, const Eig
     // Update M and C
     for (int i = 0; i < N; ++i) {
         int rows = i * n;
+        std::cout << "C:\n" << C << "\n";
+        std::cout << "tmp * B:\n" << tmp * B << "\n";
+        std::cout << "C.block((rows)*n, 0, n, (N-1) *p):\n" << C.block(rows, 0, n, (N-1) *p) << "\n";
+        C.block(n+rows, 0, n, N * p) << tmp * B, C.block(rows, 0, n, (N-1) *p);
 
-        C.block((n-1)+rows, 0, n, N * p) << tmp * B, C.block(rows - n, 0, n, N * p).rightCols(N * p - p);
         tmp = A * tmp;
-        M.block(rows, 0, n, n) = tmp;
+        M.block(n+rows, 0, n, n) = tmp;
     }
+
+    std::cout << "C:\n" << C << "\n";
+    std::cout << "M:\n" << M << "\n";
 
     // Define Q_bar and R_bar
     Eigen::MatrixXd Q_bar = Eigen::kroneckerProduct(Eigen::MatrixXd::Identity(N, N), Q);
