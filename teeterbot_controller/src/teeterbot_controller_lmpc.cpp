@@ -28,22 +28,19 @@ void MPC_Matrices1(const Eigen::MatrixXd &A, const Eigen::MatrixXd &B, const Eig
     // Update M and C
     for (int i = 0; i < N; ++i) {
         int rows = i * n;
-        std::cout << "C:\n" << C << "\n";
-        std::cout << "tmp * B:\n" << tmp * B << "\n";
-        std::cout << "C.block((rows)*n, 0, n, (N-1) *p):\n" << C.block(rows, 0, n, (N-1) *p) << "\n";
         C.block(n+rows, 0, n, N * p) << tmp * B, C.block(rows, 0, n, (N-1) *p);
 
         tmp = A * tmp;
         M.block(n+rows, 0, n, n) = tmp;
     }
-
-    std::cout << "C:\n" << C << "\n";
-    std::cout << "M:\n" << M << "\n";
+    ROS_INFO("initializaing M and C matrices");
 
     // Define Q_bar and R_bar
-    Eigen::MatrixXd Q_bar = Eigen::kroneckerProduct(Eigen::MatrixXd::Identity(N, N), Q);
-    Q_bar = Q_bar + Eigen::kroneckerProduct(Eigen::MatrixXd::Identity(N + 1, N + 1), F);
+    Eigen::MatrixXd Q_bar = Eigen::kroneckerProduct(Eigen::MatrixXd::Identity(N+1, N+1), Q);
+    Q_bar.block(N*n,N*n,n,n) << F;
     Eigen::MatrixXd R_bar = Eigen::kroneckerProduct(Eigen::MatrixXd::Identity(N, N), R);
+    ROS_INFO("initializaing Q_bar and R_bar matrices");
+
 
     // Calculate G, E, H
     Eigen::MatrixXd G = M.transpose() * Q_bar * M;
@@ -51,7 +48,9 @@ void MPC_Matrices1(const Eigen::MatrixXd &A, const Eigen::MatrixXd &B, const Eig
     H = C.transpose() * Q_bar * C + R_bar;
 }
 
-
+void MPC_Prediction(const Eigen::MatrixXd &X_k, const Eigen::MatrixXd &U_k, Eigen::MatrixXd &E, Eigen::MatrixXd &H, int N, int p){
+     Eigen::MatrixXd U_horizon = Eigen::MatrixXd::Zero(N * p, 1);
+}
 
 int main(int argc, char **argv)
 {
@@ -130,7 +129,7 @@ int main(int argc, char **argv)
 
     R << 0.1;
 
-    Q << 0.1, 0.0, 0.0, 0.0,
+    F << 0.1, 0.0, 0.0, 0.0,
          0.0, 1.0, 0.0, 0.0,
          0.0, 0.0, 0.5, 0.0,
          0.0, 0.0, 0.0, 0.1;
