@@ -6,11 +6,13 @@
 #include <sensor_msgs/Imu.h>
 #include <tf/transform_datatypes.h>
 #include <geometry_msgs/Twist.h>
+#include <sensor_msgs/Imu.h>
+#include <geometry_msgs/Twist.h>
 
 #include <Eigen/Dense>
 #include <eigen3/unsupported/Eigen/KroneckerProduct> 
-#include "MPC_Matrices.h"
-#include "coder_array.h"
+#include "MPC_Prediction.h"
+// #include "coder_array.h"
 
 #include <iostream>
 
@@ -48,9 +50,7 @@ void MPC_Matrices1(const Eigen::MatrixXd &A, const Eigen::MatrixXd &B, const Eig
     H = C.transpose() * Q_bar * C + R_bar;
 }
 
-void MPC_Prediction(const Eigen::MatrixXd &X_k, const Eigen::MatrixXd &U_k, Eigen::MatrixXd &E, Eigen::MatrixXd &H, int N, int p){
-     Eigen::MatrixXd U_horizon = Eigen::MatrixXd::Zero(N * p, 1);
-}
+
 
 int main(int argc, char **argv)
 {
@@ -137,8 +137,25 @@ int main(int argc, char **argv)
     Eigen::MatrixXd E, H;
     MPC_Matrices1(A, B, Q, R, F, N, E, H);
 
+     double x_k[4] = {0,0,0,0};
+     // double E_array[40];
+     // double H_array[100];
+     double u_k_data[1];
+     int u_k_size[1];
+
+     double* E_array = E.data();
+     double* H_array = H.data();
+
+    MPC_Prediction(x_k, E_array, H_array, N, p, u_k_data, u_k_size);
+
+
+
+
+
     std::cout << "E:\n" << E << "\n\n";
     std::cout << "H:\n" << H << "\n";
+
+    std::cout << "u_k_data:\n" << u_k_data[0] << "\n";
 
 
 }

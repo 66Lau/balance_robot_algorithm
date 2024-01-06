@@ -3,6 +3,7 @@ project(teeterbot_controller)
 
 set(CASADI_LIBRARIES ${CASADI_LIBRARIES} ${CASADI_LIBRARY})
 set(IPOPT_INCLUDE_DIRS /usr/include/coin)
+set(MPC_PREDICTION_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/src/MPC_Prediction)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -125,10 +126,15 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
+
 include
   ${catkin_INCLUDE_DIRS}
   ${IPOPT_INCLUDE_DIRS}
+  ${MPC_PREDICTION_INCLUDE_DIR}
+
 )
+
+add_subdirectory(src/MPC_Prediction)
 
 ## Declare a C++ library
 # add_library(
@@ -148,7 +154,7 @@ add_executable(teeterbot_controller_lqr src/teeterbot_controller_lqr.cpp)
 # add_executable(teeterbot_controller_nmpc src/teeterbot_controller_nmpc.cpp src/nmpc_cartpole.cpp)
 add_executable(teeterbot_keyboard_input src/teeterbot_keyboard_input.cpp)
 
-add_executable(teeterbot_controller_lmpc src/teeterbot_controller_lmpc.cpp src/MPC_Matrices.cpp)
+add_executable(teeterbot_controller_lmpc src/teeterbot_controller_lmpc.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -174,6 +180,7 @@ target_link_libraries(teeterbot_keyboard_input
 
 target_link_libraries(teeterbot_controller_lmpc 
   ${catkin_LIBRARIES}
+  MPC_Prediction_Lib
 )
 
 
