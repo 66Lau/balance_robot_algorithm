@@ -7,6 +7,7 @@
   <arg name="start_y" default="0.0" />
   <arg name="start_z" default="0.2" />
   <arg name="start_yaw" default="0.0" />
+  <arg name="start_pit" default="0.0" />
 
   <!-- Physical properties -->
   <arg name="body_length" default="0.8" />
@@ -44,7 +45,7 @@
     <param name="robot_description" command="$(find xacro)/xacro '$(find teeterbot_description)/urdf/teeterbot.urdf.xacro' robot_name:=$(arg robot_name) training_wheels:=$(arg training_wheels) body_depth:=$(arg body_depth) body_width:=$(arg body_width) body_length:=$(arg body_length) body_mass:=$(arg body_mass) wheel_mass:=$(arg wheel_mass) wheel_radius:=$(arg wheel_radius) $(arg ground_truth_arg) $(arg auto_reset_arg) auto_reset_delay:=$(arg auto_reset_delay) $(arg voltage_arg) $(arg torque_arg) $(arg speed_arg) --inorder" />
 
     <!-- Pass parsed URDF to Gazebo model spawning service -->
-    <node pkg="gazebo_ros" type="spawn_model"  name="spawn_$(arg robot_name)" args="-urdf -param robot_description -model $(arg robot_name) -x $(arg start_x) -y $(arg start_y) -z $(arg start_z) -Y $(arg start_yaw)"/>
+    <node pkg="gazebo_ros" type="spawn_model"  name="spawn_$(arg robot_name)" args="-urdf -param robot_description -model $(arg robot_name) -x $(arg start_x) -y $(arg start_y) -z $(arg start_z) -Y $(arg start_yaw) -P $(arg start_pit)"/>
 
     <!-- Publish TF frames within URDF model -->
     <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">

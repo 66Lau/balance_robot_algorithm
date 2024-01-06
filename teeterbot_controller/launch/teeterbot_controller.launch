@@ -12,17 +12,17 @@
     <arg name="verbose" value="$(arg verbose)"/>
     <arg name="world_name" value="$(find sentry_gazebo)/worlds/2023_v_4_1.world"/>
   </include> -->
-  
-  <node pkg="teeterbot_controller" type="teeterbot_controller_lqr" name="teeterbot_controller_lqr" output = "screen">
+
+  <!-- <node pkg="teeterbot_controller" type="teeterbot_controller_lqr" name="teeterbot_controller_lqr" output = "screen">
     <param name="K1"  value="-0.00" />
     <param name="K2"  value="223.09" />
     <param name="K3"  value="-3.88" />
     <param name="K4"  value="22.21" />
-    <!-- <param name="K1"  value="-0.00" />
-    <param name="K2"  value="228.98" />
-    <param name="K3"  value="-6.34" />
-    <param name="K4"  value="24.83" /> -->
 
+  </node> -->
+  
+
+  <node pkg="teeterbot_controller" type="teeterbot_controller_lmpc" name="teeterbot_controller_lmpc" output = "screen">
   </node>
 
   <node pkg="teeterbot_controller" type="teeterbot_keyboard_input" name="teeterbot_keyboard_input" launch-prefix="xterm -e">

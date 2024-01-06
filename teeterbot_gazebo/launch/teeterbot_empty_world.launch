@@ -2,7 +2,9 @@
 <launch>
 
   <!-- Start up Gazebo -->
-  <include file="$(find gazebo_ros)/launch/empty_world.launch" />
+  <include file="$(find gazebo_ros)/launch/empty_world.launch" >
+  <arg name = "paused" value = "true"/>
+  </include>
 
   <!-- Spawn Teeterbot with specific settings -->
   <include file="$(find teeterbot_gazebo)/launch/teeterbot_robot.launch" >
@@ -12,6 +14,7 @@
     <arg name="start_y" value="0.0" />
     <arg name="start_z" value="0.2" />
     <arg name="start_yaw" value="0.0" />
+    <arg name="start_pit" value="0.05" />
 
     <!-- Physical properties -->
     <arg name="body_length" value="0.8" />
