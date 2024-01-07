@@ -54,3 +54,20 @@ To control TeeterBot, a separate `std_msgs/Float64` topic is advertised for each
 - **Voltage mode**: `<robot name>/left_motor_voltage` and `<robot name>/right_motor_voltage`
 - **Torque mode**: `<robot name>/left_torque_cmd` and `<robot name>/right_torque_cmd`
 - **Speed mode**: `<robot name>/left_speed_cmd` and `<robot name>/right_speed_cmd`
+
+## Controller
+To use different controller (lqr/lmpc/nmpc), you need to change the controller node in `teeterbot_controller.launch`.
+
+- LQR  
+Using matlab to get `K`, and multiple the states to get the control input.
+- LMPC  
+First, I build a desperate state space for cart-pole modle, and then I convert the code for initializing MPC matrices and MPC rollout prediction from matlab to CPP. The part of initializing MPC are included in `teeterbot_controller_lmpc.cpp` file, and the part of prediction will take use of function `quadprog()` in matlab, which I have converting it into the CPP code in directory `MPC_Prediction` and modified CmakeLists to make it works.
+- NMPC  
+	...TBD
+
+## Usage
+
+``` SHELL
+roslaunch teeterbot_gazebo teeterbot_empty_world.launch
+roslaunch teeterbot_controller teeterbot_controller.launch 
+```

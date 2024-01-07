@@ -47,16 +47,6 @@ geometry_msgs::Twist keyboard_input_cmd_vel;
 
 void ImuHandler(const sensor_msgs::Imu::ConstPtr& ImuIn)
 {
-  // ImuIn->orientation.x;
-  // ImuIn->orientation.y;
-  // ImuIn->orientation.z;
-  // ImuIn->orientation.w;
-  // ImuIn->angular_velocity.x;
-  // ImuIn->angular_velocity.y; 
-  // ImuIn->angular_velocity.z;
-  // ImuIn->linear_acceleration.x;
-  // ImuIn->linear_acceleration.y;
-  // ImuIn->linear_acceleration.z;
 
   tf::Quaternion quat;
   tf::quaternionMsgToTF(ImuIn->orientation, quat);
@@ -69,7 +59,6 @@ void ImuHandler(const sensor_msgs::Imu::ConstPtr& ImuIn)
   state_space_left_theta = -pitch;
   state_space_right_theta_dot = -ImuIn->angular_velocity.y;
   state_space_right_theta = -pitch;
-  // ROS_INFO("pitch:%f",pitch);
 }
 
 void LeftWheelSpeedHandler(const std_msgs::Float64::ConstPtr& SpeedIn)
